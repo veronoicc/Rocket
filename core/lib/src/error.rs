@@ -184,7 +184,7 @@ impl Error {
 
                     error!("Rocket failed to launch due to the following {} collisions:", kind);
                     for &(ref a, ref b) in collisions {
-                        info_!("{} {} {}", a, Paint::red("collides with").italic(), b)
+                        info_!("{} {} {}", a, "collides with".red().italic(), b)
                     }
                 }
 
@@ -204,7 +204,7 @@ impl Error {
             }
             ErrorKind::InsecureSecretKey(profile) => {
                 error!("secrets enabled in non-debug without `secret_key`");
-                info_!("selected profile: {}", Paint::default(profile).bold());
+                info_!("selected profile: {}", profile.primary().bold());
                 info_!("disable `secrets` feature or configure a `secret_key`");
                 "aborting due to insecure configuration"
             }
@@ -215,7 +215,7 @@ impl Error {
             ErrorKind::SentinelAborts(ref failures) => {
                 error!("Rocket failed to launch due to aborting sentinels:");
                 for sentry in failures {
-                    let name = Paint::default(sentry.type_name).bold();
+                    let name = sentry.type_name.primary().bold();
                     let (file, line, col) = sentry.location;
                     info_!("{} ({}:{}:{})", name, file, line, col);
                 }

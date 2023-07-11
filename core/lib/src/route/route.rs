@@ -295,22 +295,22 @@ impl Route {
 impl fmt::Display for Route {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         if let Some(ref n) = self.name {
-            write!(f, "{}{}{} ", Paint::cyan("("), Paint::white(n), Paint::cyan(")"))?;
+            write!(f, "{}{}{} ", "(".cyan(), n.primary(), ")".cyan())?;
         }
 
-        write!(f, "{} ", Paint::green(&self.method))?;
+        write!(f, "{} ", self.method.green())?;
         if self.uri.base() != "/" {
-            write!(f, "{}", Paint::blue(self.uri.base()).underline())?;
+            write!(f, "{}", self.uri.base().blue().underline())?;
         }
 
-        write!(f, "{}", Paint::blue(&self.uri.unmounted_origin))?;
+        write!(f, "{}", self.uri.unmounted_origin.blue())?;
 
         if self.rank > 1 {
-            write!(f, " [{}]", Paint::default(&self.rank).bold())?;
+            write!(f, " [{}]", self.rank.primary().bold())?;
         }
 
         if let Some(ref format) = self.format {
-            write!(f, " {}", Paint::yellow(format))?;
+            write!(f, " {}", format.yellow())?;
         }
 
         Ok(())
