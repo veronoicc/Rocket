@@ -2,13 +2,13 @@ error[E0271]: type mismatch resolving `<String as FromParam<'_>>::Error == &str`
   --> tests/ui-fail-stable/typed-uri-bad-type.rs:22:37
    |
 22 | fn optionals(id: Option<i32>, name: Result<String, &str>) {  }
-   |                                     ^^^^^^ expected enum `Infallible`, found `&str`
+   |                                     ^^^^^^ expected `Infallible`, found `&str`
 
 error[E0271]: type mismatch resolving `<String as FromParam<'_>>::Error == &str`
   --> tests/ui-fail-stable/typed-uri-bad-type.rs:22:37
    |
 22 | fn optionals(id: Option<i32>, name: Result<String, &str>) {  }
-   |                                     ^^^^^^ expected `&str`, found enum `Infallible`
+   |                                     ^^^^^^ expected `&str`, found `Infallible`
 
 error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path, &str>` is not satisfied
   --> tests/ui-fail-stable/typed-uri-bad-type.rs:45:22
@@ -273,6 +273,8 @@ error[E0277]: the trait bound `rocket::http::uri::Asterisk: ValidRouteSuffix<roc
 note: required by a bound in `RouteUriBuilder::with_suffix`
   --> $WORKSPACE/core/http/src/uri/fmt/formatter.rs
    |
+   |     pub fn with_suffix<S>(self, suffix: S) -> SuffixedRouteUri<S::Output>
+   |            ----------- required by a bound in this associated function
    |         where S: ValidRouteSuffix<Origin<'static>>
    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `RouteUriBuilder::with_suffix`
 
@@ -303,5 +305,7 @@ error[E0277]: the trait bound `rocket::http::uri::Origin<'_>: ValidRouteSuffix<r
 note: required by a bound in `RouteUriBuilder::with_suffix`
   --> $WORKSPACE/core/http/src/uri/fmt/formatter.rs
    |
+   |     pub fn with_suffix<S>(self, suffix: S) -> SuffixedRouteUri<S::Output>
+   |            ----------- required by a bound in this associated function
    |         where S: ValidRouteSuffix<Origin<'static>>
    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `RouteUriBuilder::with_suffix`
