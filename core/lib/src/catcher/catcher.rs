@@ -16,12 +16,14 @@ use yansi::Paint;
 ///
 ///   * A failing guard.
 ///   * A failing responder.
+///   * A forwarding guard.
 ///   * Routing failure.
 ///
-/// Each failure is paired with a status code. Guards and responders indicate
-/// the status code themselves via their `Err` return value while a routing
-/// failure is always a `404`. Rocket invokes the error handler for the catcher
-/// with the error's status code.
+/// Each error or forward is paired with a status code. Guards and responders
+/// indicate the status code themselves via their `Err` and `Outcome` return
+/// value. A complete routing failure is always a `404`. Rocket invokes the
+/// error handler for the catcher with an error's status code, or in the case of
+/// every route resulting in a forward, the last forwarded status code.
 ///
 /// ### Error Handler Restrictions
 ///
@@ -31,14 +33,18 @@ use yansi::Paint;
 ///
 /// # Routing
 ///
-/// An error arising from a particular request _matches_ a catcher _iff_:
+/// If a route fails by returning an error [`Outcome`], Rocket routes the
+/// erroring request to the highest precedence catcher among all the catchers
+/// that match. Precedence is determined by the catcher's _base_, which is
+/// provided as the first argument to [`Rocket::register()`]. Catchers with more
+/// non-empty segments have a higher precedence.
 ///
-///  * It is a default catcher _or_ has a status code matching the error code.
-///  * Its base is a prefix of the normalized/decoded request URI path.
+/// Rocket provides [built-in defaults](#built-in-default), but _default_
+/// catchers can also be registered. A _default_ catcher is a catcher with no
+/// explicit status code: `None`.
 ///
-/// A _default_ catcher is a catcher with no explicit status code: `None`. The
-/// catcher's _base_ is provided as the first argument to
-/// [`Rocket::register()`](crate::Rocket::register()).
+/// [`Outcome`]: crate::request::Outcome
+/// [`Rocket::register()`]: crate::Rocket::register()
 ///
 /// # Collisions
 ///
