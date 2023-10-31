@@ -11,43 +11,58 @@ error[E0271]: type mismatch resolving `<String as FromParam<'_>>::Error == &str`
    |                                     ^^^^^^^^^^^^^^^^^^^^ expected `&str`, found `Infallible`
 
 error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path, &str>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:45:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:13:15
    |
+13 | fn simple(id: usize) {  }
+   |               ^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, &str>` is not implemented for `usize`
+...
 45 |     uri!(simple(id = "hi"));
-   |     ^^^^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, &str>` is not implemented for `usize`
+   |     ----------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <usize as FromUriParam<P, usize>>
              <usize as FromUriParam<P, &'x usize>>
              <usize as FromUriParam<P, &'x mut usize>>
+   = note: this error originates in the macro `rocket_uri_macro_simple` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path, &str>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:47:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:13:15
    |
+13 | fn simple(id: usize) {  }
+   |               ^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, &str>` is not implemented for `usize`
+...
 47 |     uri!(simple("hello"));
-   |     ^^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, &str>` is not implemented for `usize`
+   |     --------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <usize as FromUriParam<P, usize>>
              <usize as FromUriParam<P, &'x usize>>
              <usize as FromUriParam<P, &'x mut usize>>
+   = note: this error originates in the macro `rocket_uri_macro_simple` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path, i64>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:49:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:13:15
    |
+13 | fn simple(id: usize) {  }
+   |               ^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, i64>` is not implemented for `usize`
+...
 49 |     uri!(simple(id = 239239i64));
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, i64>` is not implemented for `usize`
+   |     ---------------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <usize as FromUriParam<P, usize>>
              <usize as FromUriParam<P, &'x usize>>
              <usize as FromUriParam<P, &'x mut usize>>
+   = note: this error originates in the macro `rocket_uri_macro_simple` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Path, _>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:51:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:16:35
    |
+16 | fn not_uri_display(id: i32, name: S) {  }
+   |                                   ^ the trait `FromUriParam<rocket::http::uri::fmt::Path, _>` is not implemented for `S`
+...
 51 |     uri!(not_uri_display(10, S));
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, _>` is not implemented for `S`
+   |     ---------------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <bool as FromUriParam<P, bool>>
@@ -59,6 +74,7 @@ error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Path, _>`
              <i8 as FromUriParam<P, i8>>
              <i8 as FromUriParam<P, &'x i8>>
            and $N others
+   = note: this error originates in the macro `rocket_uri_macro_not_uri_display` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Path, _>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:51:30
@@ -76,24 +92,32 @@ error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Path, _>`
              <i8 as FromUriParam<P, i8>>
              <i8 as FromUriParam<P, &'x i8>>
            and $N others
+   = note: this error originates in the macro `rocket::rocket_internal_uri` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `i32: FromUriParam<rocket::http::uri::fmt::Path, std::option::Option<{integer}>>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:56:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:22:18
    |
+22 | fn optionals(id: Option<i32>, name: Result<String, &str>) {  }
+   |                  ^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, std::option::Option<{integer}>>` is not implemented for `i32`
+...
 56 |     uri!(optionals(id = Some(10), name = Ok("bob".into())));
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, std::option::Option<{integer}>>` is not implemented for `i32`
+   |     ------------------------------------------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <i32 as FromUriParam<P, i32>>
              <i32 as FromUriParam<P, &'x i32>>
              <i32 as FromUriParam<P, &'x mut i32>>
    = note: required for `std::option::Option<i32>` to implement `FromUriParam<rocket::http::uri::fmt::Path, std::option::Option<{integer}>>`
+   = note: this error originates in the macro `rocket_uri_macro_optionals` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `std::string::String: FromUriParam<rocket::http::uri::fmt::Path, Result<_, _>>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:56:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:22:37
    |
+22 | fn optionals(id: Option<i32>, name: Result<String, &str>) {  }
+   |                                     ^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, Result<_, _>>` is not implemented for `std::string::String`
+...
 56 |     uri!(optionals(id = Some(10), name = Ok("bob".into())));
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, Result<_, _>>` is not implemented for `std::string::String`
+   |     ------------------------------------------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <std::string::String as FromUriParam<P, std::string::String>>
@@ -103,34 +127,46 @@ error[E0277]: the trait bound `std::string::String: FromUriParam<rocket::http::u
              <std::string::String as FromUriParam<P, &'x &'a str>>
              <std::string::String as FromUriParam<P, &'x mut &'a str>>
    = note: required for `Result<std::string::String, &str>` to implement `FromUriParam<rocket::http::uri::fmt::Path, Result<_, _>>`
+   = note: this error originates in the macro `rocket_uri_macro_optionals` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `isize: FromUriParam<rocket::http::uri::fmt::Query, &str>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:58:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:36:17
    |
+36 | fn simple_q(id: isize) {  }
+   |                 ^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Query, &str>` is not implemented for `isize`
+...
 58 |     uri!(simple_q("hi"));
-   |     ^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Query, &str>` is not implemented for `isize`
+   |     -------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <isize as FromUriParam<P, isize>>
              <isize as FromUriParam<P, &'x isize>>
              <isize as FromUriParam<P, &'x mut isize>>
+   = note: this error originates in the macro `rocket_uri_macro_simple_q` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `isize: FromUriParam<rocket::http::uri::fmt::Query, &str>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:60:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:36:17
    |
+36 | fn simple_q(id: isize) {  }
+   |                 ^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Query, &str>` is not implemented for `isize`
+...
 60 |     uri!(simple_q(id = "hi"));
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Query, &str>` is not implemented for `isize`
+   |     ------------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <isize as FromUriParam<P, isize>>
              <isize as FromUriParam<P, &'x isize>>
              <isize as FromUriParam<P, &'x mut isize>>
+   = note: this error originates in the macro `rocket_uri_macro_simple_q` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Query, _>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:62:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:39:29
    |
+39 | fn other_q(id: usize, rest: S) {  }
+   |                             ^ the trait `FromUriParam<rocket::http::uri::fmt::Query, _>` is not implemented for `S`
+...
 62 |     uri!(other_q(100, S));
-   |     ^^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Query, _>` is not implemented for `S`
+   |     --------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <bool as FromUriParam<P, bool>>
@@ -142,6 +178,7 @@ error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Query, _>
              <i8 as FromUriParam<P, i8>>
              <i8 as FromUriParam<P, &'x i8>>
            and $N others
+   = note: this error originates in the macro `rocket_uri_macro_other_q` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Query, _>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:62:23
@@ -159,12 +196,16 @@ error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Query, _>
              <i8 as FromUriParam<P, i8>>
              <i8 as FromUriParam<P, &'x i8>>
            and $N others
+   = note: this error originates in the macro `rocket::rocket_internal_uri` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Query, _>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:64:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:39:29
    |
+39 | fn other_q(id: usize, rest: S) {  }
+   |                             ^ the trait `FromUriParam<rocket::http::uri::fmt::Query, _>` is not implemented for `S`
+...
 64 |     uri!(other_q(rest = S, id = 100));
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Query, _>` is not implemented for `S`
+   |     --------------------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <bool as FromUriParam<P, bool>>
@@ -176,6 +217,7 @@ error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Query, _>
              <i8 as FromUriParam<P, i8>>
              <i8 as FromUriParam<P, &'x i8>>
            and $N others
+   = note: this error originates in the macro `rocket_uri_macro_other_q` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Query, _>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:64:25
@@ -193,6 +235,7 @@ error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Query, _>
              <i8 as FromUriParam<P, i8>>
              <i8 as FromUriParam<P, &'x i8>>
            and $N others
+   = note: this error originates in the macro `rocket::rocket_internal_uri` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `S: Ignorable<rocket::http::uri::fmt::Query>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:66:25
@@ -225,10 +268,13 @@ note: required by a bound in `assert_ignorable`
    |                                     ^^^^^^^^^^^^ required by this bound in `assert_ignorable`
 
 error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Query, _>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:68:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:39:29
    |
+39 | fn other_q(id: usize, rest: S) {  }
+   |                             ^ the trait `FromUriParam<rocket::http::uri::fmt::Query, _>` is not implemented for `S`
+...
 68 |     uri!(other_q(rest = S, id = _));
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Query, _>` is not implemented for `S`
+   |     ------------------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <bool as FromUriParam<P, bool>>
@@ -240,6 +286,7 @@ error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Query, _>
              <i8 as FromUriParam<P, i8>>
              <i8 as FromUriParam<P, &'x i8>>
            and $N others
+   = note: this error originates in the macro `rocket_uri_macro_other_q` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Query, _>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:68:25
@@ -257,17 +304,22 @@ error[E0277]: the trait bound `S: FromUriParam<rocket::http::uri::fmt::Query, _>
              <i8 as FromUriParam<P, i8>>
              <i8 as FromUriParam<P, &'x i8>>
            and $N others
+   = note: this error originates in the macro `rocket::rocket_internal_uri` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path, &str>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:77:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:13:15
    |
+13 | fn simple(id: usize) {  }
+   |               ^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, &str>` is not implemented for `usize`
+...
 77 |     uri!(uri!("?foo#bar"), simple(id = "hi"));
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, &str>` is not implemented for `usize`
+   |     ----------------------------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <usize as FromUriParam<P, usize>>
              <usize as FromUriParam<P, &'x usize>>
              <usize as FromUriParam<P, &'x mut usize>>
+   = note: this error originates in the macro `rocket_uri_macro_simple` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `rocket::http::uri::Reference<'_>: ValidRoutePrefix` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:77:15
@@ -288,15 +340,19 @@ note: required by a bound in `RouteUriBuilder::with_prefix`
    |                           ^^^^^^^^^^^^^^^^ required by this bound in `RouteUriBuilder::with_prefix`
 
 error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path, &str>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:78:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:13:15
    |
+13 | fn simple(id: usize) {  }
+   |               ^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, &str>` is not implemented for `usize`
+...
 78 |     uri!(uri!("*"), simple(id = "hi"));
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, &str>` is not implemented for `usize`
+   |     ---------------------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <usize as FromUriParam<P, usize>>
              <usize as FromUriParam<P, &'x usize>>
              <usize as FromUriParam<P, &'x mut usize>>
+   = note: this error originates in the macro `rocket_uri_macro_simple` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `rocket::http::uri::Asterisk: ValidRoutePrefix` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:78:15
@@ -317,15 +373,19 @@ note: required by a bound in `RouteUriBuilder::with_prefix`
    |                           ^^^^^^^^^^^^^^^^ required by this bound in `RouteUriBuilder::with_prefix`
 
 error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path, &str>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:81:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:13:15
    |
+13 | fn simple(id: usize) {  }
+   |               ^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, &str>` is not implemented for `usize`
+...
 81 |     uri!(_, simple(id = "hi"), uri!("*"));
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, &str>` is not implemented for `usize`
+   |     ------------------------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <usize as FromUriParam<P, usize>>
              <usize as FromUriParam<P, &'x usize>>
              <usize as FromUriParam<P, &'x mut usize>>
+   = note: this error originates in the macro `rocket_uri_macro_simple` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `rocket::http::uri::Asterisk: ValidRouteSuffix<rocket::http::uri::Origin<'static>>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:81:37
@@ -350,15 +410,19 @@ note: required by a bound in `RouteUriBuilder::with_suffix`
    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `RouteUriBuilder::with_suffix`
 
 error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path, &str>` is not satisfied
-  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:82:5
+  --> tests/ui-fail-nightly/typed-uri-bad-type.rs:13:15
    |
+13 | fn simple(id: usize) {  }
+   |               ^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, &str>` is not implemented for `usize`
+...
 82 |     uri!(_, simple(id = "hi"), uri!("/foo/bar"));
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `FromUriParam<rocket::http::uri::fmt::Path, &str>` is not implemented for `usize`
+   |     -------------------------------------------- in this macro invocation
    |
    = help: the following other types implement trait `FromUriParam<P, T>`:
              <usize as FromUriParam<P, usize>>
              <usize as FromUriParam<P, &'x usize>>
              <usize as FromUriParam<P, &'x mut usize>>
+   = note: this error originates in the macro `rocket_uri_macro_simple` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `rocket::http::uri::Origin<'_>: ValidRouteSuffix<rocket::http::uri::Origin<'static>>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:82:37
@@ -392,6 +456,7 @@ error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path,
              <usize as FromUriParam<P, usize>>
              <usize as FromUriParam<P, &'x usize>>
              <usize as FromUriParam<P, &'x mut usize>>
+   = note: this error originates in the macro `rocket::rocket_internal_uri` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path, &str>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:47:17
@@ -403,6 +468,7 @@ error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path,
              <usize as FromUriParam<P, usize>>
              <usize as FromUriParam<P, &'x usize>>
              <usize as FromUriParam<P, &'x mut usize>>
+   = note: this error originates in the macro `rocket::rocket_internal_uri` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path, i64>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:49:22
@@ -414,6 +480,7 @@ error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path,
              <usize as FromUriParam<P, usize>>
              <usize as FromUriParam<P, &'x usize>>
              <usize as FromUriParam<P, &'x mut usize>>
+   = note: this error originates in the macro `rocket::rocket_internal_uri` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `i32: FromUriParam<rocket::http::uri::fmt::Path, std::option::Option<{integer}>>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:56:25
@@ -426,6 +493,7 @@ error[E0277]: the trait bound `i32: FromUriParam<rocket::http::uri::fmt::Path, s
              <i32 as FromUriParam<P, &'x i32>>
              <i32 as FromUriParam<P, &'x mut i32>>
    = note: required for `std::option::Option<i32>` to implement `FromUriParam<rocket::http::uri::fmt::Path, std::option::Option<{integer}>>`
+   = note: this error originates in the macro `rocket::rocket_internal_uri` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `isize: FromUriParam<rocket::http::uri::fmt::Query, &str>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:58:19
@@ -437,6 +505,7 @@ error[E0277]: the trait bound `isize: FromUriParam<rocket::http::uri::fmt::Query
              <isize as FromUriParam<P, isize>>
              <isize as FromUriParam<P, &'x isize>>
              <isize as FromUriParam<P, &'x mut isize>>
+   = note: this error originates in the macro `rocket::rocket_internal_uri` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `isize: FromUriParam<rocket::http::uri::fmt::Query, &str>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:60:24
@@ -448,6 +517,7 @@ error[E0277]: the trait bound `isize: FromUriParam<rocket::http::uri::fmt::Query
              <isize as FromUriParam<P, isize>>
              <isize as FromUriParam<P, &'x isize>>
              <isize as FromUriParam<P, &'x mut isize>>
+   = note: this error originates in the macro `rocket::rocket_internal_uri` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path, &str>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:77:40
@@ -459,6 +529,7 @@ error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path,
              <usize as FromUriParam<P, usize>>
              <usize as FromUriParam<P, &'x usize>>
              <usize as FromUriParam<P, &'x mut usize>>
+   = note: this error originates in the macro `rocket::rocket_internal_uri` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path, &str>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:78:33
@@ -470,6 +541,7 @@ error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path,
              <usize as FromUriParam<P, usize>>
              <usize as FromUriParam<P, &'x usize>>
              <usize as FromUriParam<P, &'x mut usize>>
+   = note: this error originates in the macro `rocket::rocket_internal_uri` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path, &str>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:81:25
@@ -481,6 +553,7 @@ error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path,
              <usize as FromUriParam<P, usize>>
              <usize as FromUriParam<P, &'x usize>>
              <usize as FromUriParam<P, &'x mut usize>>
+   = note: this error originates in the macro `rocket::rocket_internal_uri` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path, &str>` is not satisfied
   --> tests/ui-fail-nightly/typed-uri-bad-type.rs:82:25
@@ -492,3 +565,4 @@ error[E0277]: the trait bound `usize: FromUriParam<rocket::http::uri::fmt::Path,
              <usize as FromUriParam<P, usize>>
              <usize as FromUriParam<P, &'x usize>>
              <usize as FromUriParam<P, &'x mut usize>>
+   = note: this error originates in the macro `rocket::rocket_internal_uri` which comes from the expansion of the macro `uri` (in Nightly builds, run with -Z macro-backtrace for more info)
