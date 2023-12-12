@@ -165,7 +165,7 @@ impl Catcher {
     {
         let code = code.into();
         if let Some(code) = code {
-            assert!(code >= 400 && code < 600);
+            assert!(code >= 0 && code <= 65535);
         }
 
         Catcher {
