@@ -315,7 +315,7 @@ route_attribute!(options => Method::Options);
 /// ```text
 /// catch := STATUS | 'default'
 ///
-/// STATUS := valid HTTP status code (integer in [200, 599])
+/// STATUS := valid HTTP status code (integer in [0, 65535])
 /// ```
 ///
 /// # Typing Requirements
