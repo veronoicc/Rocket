@@ -37,9 +37,6 @@ pub struct Asterisk(pub http::uri::Asterisk, pub Span);
 impl FromMeta for Status {
     fn from_meta(meta: &MetaItem) -> Result<Self> {
         let num = usize::from_meta(meta)?;
-        if num < 100 || num >= 600 {
-            return Err(meta.value_span().error("status must be in range [100, 599]"));
-        }
 
         Ok(Status(http::Status::new(num as u16)))
     }
